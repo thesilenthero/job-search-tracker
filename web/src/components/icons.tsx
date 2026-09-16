@@ -18,6 +18,7 @@ import {
   ArrowLeft,
   ArrowRight,
   ArrowUp,
+  ArrowUpDown,
   Check,
   ChevronDown,
   ChevronRight,
@@ -34,6 +35,7 @@ export {
   ArrowLeft,
   ArrowRight,
   ArrowUp,
+  ArrowUpDown,
   Check,
   ChevronDown,
   ChevronRight,
@@ -49,6 +51,10 @@ export {
 // state to another. Chevrons mean expand/collapse. The glyphs these replaced
 // used ▲/▼ for both, which is why a sortable column header and a disclosure
 // header used to look like the same control when they aren't.
+//
+// ArrowUpDown is the neutral member of the sort family: this column sorts, but
+// it isn't the one sorting right now. It exists because a column that shows a
+// single arrow while inactive is claiming a direction it won't deliver.
 
 type IconPreset = {
   readonly size: number;

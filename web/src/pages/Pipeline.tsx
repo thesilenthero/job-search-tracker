@@ -29,7 +29,15 @@ import { Board } from "../components/Board";
 import { Skeleton } from "../components/Skeleton";
 import { fmtDate, fmtSalary, relativeDays } from "../lib/format";
 import { VERDICTS, VERDICT_COLORS } from "../lib/evaluation";
-import { ExternalLink, icon, iconSm, Plus } from "../components/icons";
+import {
+  ArrowDown,
+  ArrowUp,
+  ArrowUpDown,
+  ExternalLink,
+  icon,
+  iconSm,
+  Plus,
+} from "../components/icons";
 
 type SortKey =
   | "dateApplied"
@@ -594,19 +602,33 @@ function SortableTh({
   onClick: () => void;
   tip?: string;
 }) {
+  // An inactive column shows the neutral two-way arrow rather than `dir`.
+  // `dir` is the table's current direction and says nothing about where
+  // clicking *this* column would land — which didn't matter while the arrow
+  // was hidden when inactive, and does now that hovering reveals it.
+  const Arrow = !active ? ArrowUpDown : dir === "asc" ? ArrowUp : ArrowDown;
   return (
-    <th className="px-4 py-2.5 font-medium">
+    <th
+      className="px-4 py-2.5 font-medium"
+      aria-sort={active ? (dir === "asc" ? "ascending" : "descending") : "none"}
+    >
       <button
         onClick={onClick}
         title={tip ?? `Sort by ${label.toLowerCase()} (click again to flip)`}
-        className={`inline-flex items-center gap-1 uppercase tracking-wide hover:text-[var(--text)] ${
+        className={`group inline-flex items-center gap-1 uppercase tracking-wide hover:text-[var(--text)] ${
           active ? "text-[var(--text)]" : ""
         }`}
       >
         {label}
-        <span className={active ? "" : "invisible"}>
-          {dir === "asc" ? "▲" : "▼"}
-        </span>
+        {/* Always rendered, so sorting never reflows the column. The faint
+            hover state is the only cue that a header sorts at all — there
+            wasn't one before. */}
+        <Arrow
+          {...iconSm}
+          className={`shrink-0 transition-opacity duration-150 ${
+            active ? "opacity-100" : "opacity-0 group-hover:opacity-50"
+          }`}
+        />
       </button>
     </th>
   );

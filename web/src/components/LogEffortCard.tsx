@@ -7,6 +7,7 @@ import {
 } from "../api";
 import { EFFORT_KINDS, EFFORT_KIND_KEYS, type EffortKind } from "../types";
 import { fmtDate, todayIso } from "../lib/format";
+import { iconSm, X } from "./icons";
 
 // The hand-logged half of the effort score.
 //
@@ -150,11 +151,12 @@ export function LogEffortCard() {
               )}
               {e.note && <span className="truncate">· {e.note}</span>}
               <button
-                className="btn btn-ghost btn-sm ml-auto shrink-0"
+                className="btn btn-ghost btn-sm btn-icon ml-auto shrink-0"
                 title="Remove this entry"
+                aria-label={`Remove ${e.label} logged ${fmtDate(e.occurredAt)}`}
                 onClick={() => remove.mutate(e.id)}
               >
-                ×
+                <X {...iconSm} />
               </button>
             </li>
           ))}

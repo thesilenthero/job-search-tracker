@@ -27,6 +27,7 @@ import {
 } from "../components/fields";
 import { fmtDate, isoFromDate, relativeDays, todayIso } from "../lib/format";
 import { SkeletonRows } from "../components/Skeleton";
+import { ArrowRight, icon, iconSm, Plus, X } from "../components/icons";
 
 const STATUS_COLORS: Record<string, string> = {
   Pending: "var(--warning)",
@@ -87,7 +88,8 @@ export default function Contacts() {
           onClick={() => setShowNew((s) => !s)}
           className="btn btn-primary btn-lg"
         >
-          + New contact
+          <Plus {...icon} />
+          New contact
         </button>
       </header>
 
@@ -417,9 +419,10 @@ function ContactCard({
                     {linked && (
                       <Link
                         to={`/application/${linked.id}`}
-                        className="ml-1 text-xs text-[var(--accent)] hover:underline"
+                        className="ml-1 inline-flex items-center gap-1 text-xs text-[var(--accent)] hover:underline"
                       >
-                        → {linked.company}
+                        <ArrowRight {...iconSm} />
+                        {linked.company}
                       </Link>
                     )}
                   </span>
@@ -430,10 +433,11 @@ function ContactCard({
                         interactionId: it.id,
                       })
                     }
-                    className="text-xs text-[var(--text-muted)] hover:text-[var(--danger)]"
+                    className="btn btn-ghost btn-sm btn-icon shrink-0 hover:text-[var(--danger)]"
                     title="Delete interaction"
+                    aria-label={`Delete the ${it.kind} logged ${fmtDate(it.occurredAt)}`}
                   >
-                    ✕
+                    <X {...iconSm} />
                   </button>
                 </li>
               );

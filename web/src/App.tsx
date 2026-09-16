@@ -7,6 +7,7 @@ import {
 } from "./api";
 import { urgencyOf } from "./lib/format";
 import { ThemeToggle } from "./components/ThemeToggle";
+import { Download, iconSm } from "./components/icons";
 import Pipeline from "./pages/Pipeline";
 import Detail from "./pages/Detail";
 import NextSteps from "./pages/NextSteps";
@@ -124,7 +125,7 @@ export default function App() {
               title="Download everything — applications, stage history, interviews, and engagements"
               className="flex w-full items-center gap-2 rounded-[var(--radius-md)] px-3 py-1.5 text-[13px] text-[var(--text-muted)] transition-colors duration-150 hover:bg-[var(--surface-2)] hover:text-[var(--text)]"
             >
-              <span aria-hidden>↓</span> Export data
+              <Download {...iconSm} /> Export data
             </a>
             <ThemeToggle />
           </div>

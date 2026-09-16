@@ -50,6 +50,14 @@ import {
   VERDICT_COLORS,
   type Evaluation as EvaluationSnapshot,
 } from "../lib/evaluation";
+import {
+  ArrowLeft,
+  Check,
+  iconSm,
+  Plus,
+  TriangleAlert,
+  X,
+} from "../components/icons";
 
 export default function Detail() {
   const { id } = useParams();
@@ -103,8 +111,12 @@ export default function Detail() {
 
   return (
     <div className="max-w-3xl">
-      <Link to="/" className="text-sm text-[var(--text-muted)] hover:text-[var(--text)]">
-        ← Back to pipeline
+      <Link
+        to="/"
+        className="inline-flex items-center gap-1.5 text-sm text-[var(--text-muted)] transition-colors duration-150 hover:text-[var(--text)]"
+      >
+        <ArrowLeft {...iconSm} />
+        Back to pipeline
       </Link>
 
       <header className="mt-3 mb-6 flex items-start justify-between gap-4">
@@ -128,10 +140,11 @@ export default function Detail() {
             onClick={copyExport}
             disabled={exported.isLoading}
             title="Copy this job — details, timeline, interviews, JD, resume and cover letter — as Markdown to paste into Claude"
-            className="text-xs text-[var(--text-muted)] hover:text-[var(--text)]"
+            className="inline-flex items-center gap-1 text-xs text-[var(--text-muted)] hover:text-[var(--text)]"
           >
+            {copyState === "copied" && <Check {...iconSm} />}
             {copyState === "copied"
-              ? "Copied ✓"
+              ? "Copied"
               : copyState === "failed"
                 ? "Copy failed — try again"
                 : exported.isLoading
@@ -328,7 +341,8 @@ export default function Detail() {
             title="Add a round manually — interview-type stage events below create one automatically"
             className="btn btn-secondary btn-sm"
           >
-            + Add round
+            <Plus {...iconSm} />
+            Add round
           </button>
         </div>
         {interviews.length === 0 ? (
@@ -441,10 +455,11 @@ export default function Detail() {
                     onClick={() =>
                       delEvent.mutate({ id: app.id, eventId: e.id })
                     }
-                    className="text-xs text-[var(--text-muted)] hover:text-[var(--danger)]"
+                    className="btn btn-ghost btn-sm btn-icon hover:text-[var(--danger)]"
                     title="Delete event"
+                    aria-label={`Delete the ${STAGE_LABELS[e.stage]} event`}
                   >
-                    ✕
+                    <X {...iconSm} />
                   </button>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
@@ -577,8 +592,12 @@ function EvaluationPanel({ evaluation: e }: { evaluation: EvaluationSnapshot }) 
           </div>
           <ul className="space-y-1">
             {setFlags.map((f) => (
-              <li key={f.key} className="text-sm text-[var(--stage-rejected)]">
-                ⚠ {f.label}
+              <li
+                key={f.key}
+                className="flex items-center gap-1.5 text-sm text-[var(--stage-rejected)]"
+              >
+                <TriangleAlert {...iconSm} />
+                {f.label}
               </li>
             ))}
           </ul>
@@ -647,10 +666,11 @@ function InterviewCard({
           onClick={() =>
             deleteInterview.mutate({ id: appId, interviewId: iv.id })
           }
-          className="ml-auto text-xs text-[var(--text-muted)] hover:text-[var(--danger)]"
+          className="btn btn-ghost btn-sm btn-icon ml-auto hover:text-[var(--danger)]"
           title="Delete round"
+          aria-label={`Delete the interview round${iv.date ? ` on ${fmtDate(iv.date)}` : ""}`}
         >
-          ✕
+          <X {...iconSm} />
         </button>
       </div>
       <input

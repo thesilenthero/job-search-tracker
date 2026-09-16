@@ -381,6 +381,22 @@ progress {
     font-size: 0.875rem;
   }
 
+  /* A button whose only content is an icon. Square, so it sits level with the
+     text buttons beside it instead of collapsing to the glyph's width. This is
+     also the hook the coarse-pointer rule uses to reach a 44px touch target —
+     an icon button is the smallest thing on the page and the easiest to miss
+     with a thumb. */
+  .btn-icon {
+    width: 2rem;
+    padding: 0;
+  }
+  .btn-icon.btn-sm {
+    width: 1.75rem;
+  }
+  .btn-icon.btn-lg {
+    width: 2.25rem;
+  }
+
   /* --- form controls ----------------------------------------------------- */
   .input {
     background: var(--surface);

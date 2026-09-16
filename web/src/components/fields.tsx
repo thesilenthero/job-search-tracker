@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { fmtDate } from "../lib/format";
+import { ExternalLink, iconSm } from "./icons";
 
 // Shared inline-edit field primitives, used by the application Detail view and
 // the Contacts page. All save on blur/change and render as quiet text until
@@ -193,9 +194,10 @@ export function FieldUrl({
             target="_blank"
             rel="noreferrer"
             title={`Open ${label.toLowerCase()}`}
-            className="text-[var(--accent)] hover:underline"
+            aria-label={`Open ${label.toLowerCase()}`}
+            className="inline-flex text-[var(--accent)] transition-opacity duration-150 hover:opacity-70"
           >
-            ↗
+            <ExternalLink {...iconSm} />
           </a>
         )}
       </dt>

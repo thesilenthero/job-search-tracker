@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useImportCsv } from "../api";
+import { ChevronDown, ChevronUp, icon } from "./icons";
 
 // Migration surface: import the old Sheets export. The user maps their columns
 // to the schema; for historical rows only the current stage is known, so the
@@ -78,7 +79,8 @@ export function ImportCard() {
     <section className="card p-5">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center justify-between text-left"
+        aria-expanded={open}
+        className="flex w-full items-center justify-between gap-3 text-left"
       >
         <div>
           <h3 className="text-sm font-semibold">Import / migrate from CSV</h3>
@@ -86,7 +88,9 @@ export function ImportCard() {
             Bring in your existing Sheets tracker. Map columns, then import.
           </p>
         </div>
-        <span className="text-[var(--text-muted)]">{open ? "▲" : "▼"}</span>
+        <span className="shrink-0 text-[var(--text-muted)]">
+          {open ? <ChevronUp {...icon} /> : <ChevronDown {...icon} />}
+        </span>
       </button>
 
       {open && (

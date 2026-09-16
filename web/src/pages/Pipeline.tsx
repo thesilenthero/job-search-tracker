@@ -29,6 +29,7 @@ import { Board } from "../components/Board";
 import { Skeleton } from "../components/Skeleton";
 import { fmtDate, fmtSalary, relativeDays } from "../lib/format";
 import { VERDICTS, VERDICT_COLORS } from "../lib/evaluation";
+import { ExternalLink, icon, iconSm, Plus } from "../components/icons";
 
 type SortKey =
   | "dateApplied"
@@ -221,7 +222,8 @@ export default function Pipeline() {
             onClick={() => setShowNew(true)}
             className="btn btn-primary btn-lg"
           >
-            + New application
+            <Plus {...icon} />
+            New application
           </button>
         </div>
       </header>
@@ -478,9 +480,10 @@ function Row({
               rel="noreferrer"
               onClick={(e) => e.stopPropagation()}
               title="Open job posting"
-              className="text-[var(--text-muted)] hover:text-[var(--accent)]"
+              aria-label={`Open the job posting for ${app.roleTitle} at ${app.company}`}
+              className="inline-flex text-[var(--text-muted)] transition-colors duration-150 hover:text-[var(--accent)]"
             >
-              ↗
+              <ExternalLink {...iconSm} />
             </a>
           )}
         </div>

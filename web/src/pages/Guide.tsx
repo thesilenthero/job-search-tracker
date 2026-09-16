@@ -11,6 +11,7 @@ import {
   TERMINAL_STAGES,
 } from "../types";
 import { StageBadge } from "../components/StageBadge";
+import { ArrowRight, iconSm } from "../components/icons";
 
 // Static reference for everything in the app. Sections are anchored so the
 // table of contents (and future deep links) can jump straight to a topic.
@@ -99,7 +100,7 @@ export default function Guide() {
             <span key={s} className="flex items-center gap-1.5">
               <StageBadge stage={s} />
               {i < FUNNEL_STAGES.length - 1 && (
-                <span className="text-[var(--text-muted)]">→</span>
+                <ArrowRight {...iconSm} className="text-[var(--text-muted)]" />
               )}
             </span>
           ))}
@@ -136,7 +137,8 @@ export default function Guide() {
           </li>
           <li>
             <b>Sorting</b> — click any column header to sort; click again to
-            flip direction (▲/▼).
+            flip direction. The arrow on the header shows which way it's
+            pointing.
           </li>
           <li>
             <b>In stage</b> — days since the last stage event. Open
@@ -158,7 +160,8 @@ export default function Guide() {
             erases the application and its log.
           </li>
           <li>
-            <b>↗ icon</b> — opens the saved job posting URL.
+            <b>The link icon</b> beside a company — opens the saved job posting
+            URL in a new tab.
           </li>
         </ul>
       </Section>
@@ -190,7 +193,8 @@ export default function Guide() {
             inline — a date change can reorder history and re-derive the current
             stage (intended). Relabel a mislabeled round (say, Later round →
             Final) in place rather than deleting it: its interview notes stay
-            attached. Delete an event with ✕; a round with notes survives as a
+            attached. Delete an event with its close button; a round with notes
+            survives as a
             standalone round, and the last remaining event can't be deleted.
           </li>
         </ul>

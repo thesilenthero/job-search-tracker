@@ -20,6 +20,7 @@ import {
   urgencyOf,
   type Urgency,
 } from "../lib/format";
+import { ArrowRight, iconSm } from "../components/icons";
 
 
 const GROUP_ORDER: Urgency[] = ["overdue", "today", "soon", "later"];
@@ -171,8 +172,9 @@ export default function NextSteps() {
                   <span className="ml-2 text-xs text-[var(--text-muted)]">
                     {s.roleTitle}
                   </span>
-                  <div className="text-xs text-[var(--text-muted)]">
-                    → {STAGE_LABELS[s.suggestedStage]}
+                  <div className="flex items-center gap-1 text-xs text-[var(--text-muted)]">
+                    <ArrowRight {...iconSm} />
+                    {STAGE_LABELS[s.suggestedStage]}
                     {s.occurredAt ? ` on ${fmtDate(s.occurredAt)}` : ""}
                     {s.evidence ? ` · ${s.evidence}` : ""}
                   </div>

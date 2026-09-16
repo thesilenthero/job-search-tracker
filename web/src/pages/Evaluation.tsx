@@ -25,6 +25,7 @@ import {
   type Scores,
 } from "../lib/evaluation";
 import { todayIso } from "../lib/format";
+import { Check, iconSm, TriangleAlert } from "../components/icons";
 
 const inputCls =
   "input w-full";
@@ -385,10 +386,13 @@ export default function Evaluation() {
             <p className="mt-2 text-xs text-[var(--text-muted)]">{verdict.blurb}</p>
 
             {caution && (
-              <p className="mt-3 rounded-lg bg-[var(--surface-2)] p-2.5 text-xs text-[var(--stage-rejected)]">
-                ⚠ A reject-fast flag is set on an otherwise-applyable score. A
-                hard structural negative can override a borderline composite —
-                reconsider before applying.
+              <p className="mt-3 flex gap-1.5 rounded-lg bg-[var(--surface-2)] p-2.5 text-xs text-[var(--stage-rejected)]">
+                <TriangleAlert {...iconSm} className="mt-0.5 shrink-0" />
+                <span>
+                  A reject-fast flag is set on an otherwise-applyable score. A
+                  hard structural negative can override a borderline composite —
+                  reconsider before applying.
+                </span>
               </p>
             )}
 
@@ -441,7 +445,8 @@ export default function Evaluation() {
                   onClick={copySummary}
                   className="btn btn-secondary flex-1"
                 >
-                  {copied ? "Copied ✓" : "Copy summary"}
+                  {copied && <Check {...iconSm} />}
+                  {copied ? "Copied" : "Copy summary"}
                 </button>
                 <button
                   type="button"

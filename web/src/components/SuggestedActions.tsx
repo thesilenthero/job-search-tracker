@@ -10,6 +10,7 @@ import { StageBadge } from "../components/StageBadge";
 import { SkeletonRows } from "../components/Skeleton";
 import { URGENT_PLAYS, type NextStep, type NextStepPlay } from "../types";
 import { todayIso } from "../lib/format";
+import { ExternalLink, iconSm } from "../components/icons";
 
 // A short tag per play, so a long queue stays scannable without reading every
 // title. Deliberately verbs — the tag says what kind of move this is.
@@ -80,7 +81,8 @@ function Row({ step }: { step: NextStep }) {
             title="Opens LinkedIn in a new tab"
             className="btn btn-secondary btn-sm"
           >
-            LinkedIn ↗
+            LinkedIn
+            <ExternalLink {...iconSm} />
           </a>
         ) : null}
 

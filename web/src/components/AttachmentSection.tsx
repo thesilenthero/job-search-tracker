@@ -7,6 +7,7 @@ import {
 } from "../api";
 import type { Application } from "../types";
 import { fmtBytes, fmtDate } from "../lib/format";
+import { Download, iconSm } from "./icons";
 
 // The two attachable documents differ only in wording and which four fields
 // they read, so one card serves both. Keyed by the same string the API uses.
@@ -79,7 +80,8 @@ export function AttachmentSection({
               className="btn btn-secondary btn-sm"
               title="Download the PDF you attached"
             >
-              ↓ Download
+              <Download {...iconSm} />
+              Download
             </a>
             <label
               className="btn btn-secondary btn-sm cursor-pointer"

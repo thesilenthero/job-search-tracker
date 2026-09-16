@@ -11,6 +11,7 @@ import {
 import type { DiscoveredStatus } from "../types";
 import { fmtDate } from "../lib/format";
 import { SkeletonRows } from "../components/Skeleton";
+import { ChevronDown, ChevronRight, iconSm } from "../components/icons";
 
 const inputCls =
   "input w-full";
@@ -117,9 +118,11 @@ export default function Discover() {
       <section className="mb-5">
         <button
           onClick={() => setShowBoards((v) => !v)}
-          className="mb-2 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text)]"
+          aria-expanded={showBoards}
+          className="mb-2 inline-flex items-center gap-1 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text)]"
         >
-          {showBoards ? "▾" : "▸"} Watched boards ({(boards ?? []).length})
+          {showBoards ? <ChevronDown {...iconSm} /> : <ChevronRight {...iconSm} />}
+          Watched boards ({(boards ?? []).length})
         </button>
 
         {showBoards && (

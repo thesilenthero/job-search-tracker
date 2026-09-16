@@ -392,8 +392,8 @@ export default function Guide() {
 
       <Section id="tools" title="Occasional tools">
         <p>
-          These two aren't in the sidebar — they're for a specific moment
-          rather than daily work, and the nav stays short because of it. Both
+          These two sit under <b>Tools</b> in the sidebar, apart from the daily
+          views — they're for a specific moment rather than everyday work. Both
           keep their URLs and all their data.
         </p>
         <ul>

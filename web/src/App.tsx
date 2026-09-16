@@ -1,4 +1,12 @@
-import { Link, Navigate, NavLink, Route, Routes } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import {
+  Link,
+  Navigate,
+  NavLink,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import {
   useApplications,
   useContacts,
@@ -69,6 +77,35 @@ function NavItem({
   );
 }
 
+type NavEntry = { to: string; label: string };
+
+// Discover and Evaluation were routed but unlinked — you had to know the URL or
+// go digging in the Guide. They are occasional rather than daily, which is what
+// the grouping now says, instead of hiding them saying it.
+const NAV_GROUPS: { label: string; items: NavEntry[] }[] = [
+  {
+    label: "Daily",
+    items: [
+      { to: "/", label: "Pipeline" },
+      { to: "/next-steps", label: "Next steps" },
+      { to: "/contacts", label: "Contacts" },
+      { to: "/analytics", label: "Analytics" },
+    ],
+  },
+  {
+    label: "Tools",
+    items: [
+      { to: "/discover", label: "Discover" },
+      { to: "/evaluation", label: "Evaluation" },
+      { to: "/guide", label: "Guide" },
+    ],
+  },
+];
+
+// The phone strip has no room for group headings — they would add a row, and
+// `main` offsets itself by a fixed amount to clear this bar.
+const NAV_FLAT = NAV_GROUPS.flatMap((g) => g.items);
+
 export default function App() {
   const { data: apps } = useApplications();
   const { data: contacts } = useContacts();
@@ -83,16 +120,38 @@ export default function App() {
     (suggestions?.length ?? 0) +
     (steps?.length ?? 0);
 
-  // One list, rendered twice — the sidebar and the mobile strip stay in step.
-  const navItems = (
-    <>
-      <NavItem to="/" label="Pipeline" />
-      <NavItem to="/next-steps" label="Next steps" badge={dueCount} accentBadge />
-      <NavItem to="/contacts" label="Contacts" />
-      <NavItem to="/analytics" label="Analytics" />
-      <NavItem to="/guide" label="Guide" />
-    </>
+  // One source of truth, rendered twice — the sidebar groups it, the strip
+  // flattens it, and neither can drift from the other.
+  const renderItem = (item: NavEntry) => (
+    <NavItem
+      key={item.to}
+      to={item.to}
+      label={item.label}
+      badge={item.to === "/next-steps" ? dueCount : undefined}
+      accentBadge={item.to === "/next-steps"}
+    />
   );
+
+  // Seven items don't fit a phone, and the strip gave no sign that the rest
+  // existed — navigate to Guide and Guide stayed off-screen. Centre whatever is
+  // active after each navigation.
+  //
+  // The reduced-motion branch is manual on purpose: the global
+  // `scroll-behavior: auto !important` governs CSS smooth scrolling and has no
+  // say over a behavior passed to scrollIntoView here. Focus is deliberately
+  // left alone — moving it on every navigation would hijack the page.
+  const stripRef = useRef<HTMLDivElement>(null);
+  const { pathname } = useLocation();
+  useEffect(() => {
+    const active = stripRef.current?.querySelector('[aria-current="page"]');
+    if (!active) return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    active.scrollIntoView({
+      behavior: reduce ? "auto" : "smooth",
+      inline: "center",
+      block: "nearest",
+    });
+  }, [pathname]);
 
   return (
     <div className="mx-auto flex min-h-screen max-w-[1400px] gap-6 px-4 py-6 md:px-6">
@@ -118,7 +177,16 @@ export default function App() {
               </div>
             </div>
           </Link>
-          <nav className="flex flex-col gap-0.5">{navItems}</nav>
+          <nav className="flex flex-col gap-4">
+            {NAV_GROUPS.map((group) => (
+              <div key={group.label} className="flex flex-col gap-0.5">
+                <div className="px-3 pb-1 text-[10px] font-medium uppercase tracking-wider text-[var(--text-muted)]">
+                  {group.label}
+                </div>
+                {group.items.map(renderItem)}
+              </div>
+            ))}
+          </nav>
           <div className="mt-6 border-t border-[var(--border)] pt-4">
             <a
               href="/api/export.zip"
@@ -138,8 +206,13 @@ export default function App() {
           <Link to="/" className="mr-1 shrink-0 text-[13px] font-semibold">
             Job Tracker
           </Link>
-          <div className="flex min-w-0 flex-1 gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {navItems}
+          {/* The mask makes the cut-off edge look like one, so it reads as
+              "more over here" rather than as the end of the list. */}
+          <div
+            ref={stripRef}
+            className="flex min-w-0 flex-1 snap-x snap-proximity gap-1 overflow-x-auto [-webkit-mask-image:linear-gradient(to_right,black_calc(100%_-_24px),transparent)] [mask-image:linear-gradient(to_right,black_calc(100%_-_24px),transparent)] [scrollbar-width:none] [&>a]:snap-start [&::-webkit-scrollbar]:hidden"
+          >
+            {NAV_FLAT.map(renderItem)}
           </div>
           <div className="shrink-0">
             <ThemeToggle compact />
